@@ -1,0 +1,88 @@
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        brand: {
+          50: '#f3f0f9',
+          100: '#e0d9f0',
+          200: '#c4b5e0',
+          300: '#A78BFA',
+          400: '#8b6be0',
+          500: '#643D91',
+          600: '#5a3682',
+          700: '#4a2d6b',
+          800: '#3a2355',
+          900: '#2a1a3e',
+          950: '#0F172A',
+        },
+        dark: {
+          DEFAULT: '#0F172A',
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+          600: '#475569',
+          700: '#334155',
+          800: '#1e293b',
+          900: '#0f172a',
+          950: '#020617',
+        },
+        indigo: '#643D91',
+        lavender: '#A78BFA',
+        rose: '#8b6be0',
+        paper: '#020617',
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['"Instrument Serif"', 'Georgia', 'serif'],
+        hand: ['Caveat', 'cursive'],
+      },
+      animation: {
+        'float': 'float 6s ease-in-out infinite',
+        'float-delayed': 'float 6s ease-in-out infinite 2s',
+        'float-slow': 'float 8s ease-in-out infinite',
+        'spin-slow': 'spin 20s linear infinite',
+        'pulse-glow': 'pulse-glow 3s ease-in-out infinite',
+        'grain': 'grain 8s steps(10) infinite',
+        'marquee': 'marquee 22s linear infinite',
+        'load-bar': 'loadBar 1.3s ease both',
+      },
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-20px)' },
+        },
+        'pulse-glow': {
+          '0%, 100%': { boxShadow: '0 0 20px rgba(100, 61, 145, 0.3)' },
+          '50%': { boxShadow: '0 0 40px rgba(100, 61, 145, 0.6)' },
+        },
+        grain: {
+          '0%, 100%': { transform: 'translate(0, 0)' },
+          '10%': { transform: 'translate(-5%, -10%)' },
+          '20%': { transform: 'translate(-15%, 5%)' },
+          '30%': { transform: 'translate(7%, -25%)' },
+          '40%': { transform: 'translate(-5%, 25%)' },
+          '50%': { transform: 'translate(-15%, 10%)' },
+          '60%': { transform: 'translate(15%, 0%)' },
+          '70%': { transform: 'translate(0%, 15%)' },
+          '80%': { transform: 'translate(3%, 35%)' },
+          '90%': { transform: 'translate(-10%, 10%)' },
+        },
+        marquee: {
+          to: { transform: 'translateX(-50%)' },
+        },
+        loadBar: {
+          from: { width: '0' },
+          to: { width: '100%' },
+        },
+      },
+    },
+  },
+  plugins: [],
+}
