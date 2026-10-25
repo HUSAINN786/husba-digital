@@ -58,7 +58,7 @@ function LoadingScreen({ onComplete }) {
       <div className="loader-grid" />
 
       <div className="loader-brand">
-        <img src="/logo.png" alt="HUSBA DIGITAL" className="w-10 h-10 rounded-full object-cover mx-auto mb-4 opacity-90" />
+        <img src="/husba-mark.svg" alt="HUSBA DIGITAL" className="w-10 h-10 rounded-full object-cover mx-auto mb-4 opacity-90" />
         <div className="loader-brand-main">
           {brandName.split('').map((char, i) => (
             <span key={i} className="loader-letter">
