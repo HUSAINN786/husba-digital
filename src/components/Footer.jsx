@@ -75,7 +75,7 @@ const Footer = () => {
 
           <div className="lg:col-span-4 footer-animate">
             <Link to="/" className="flex items-center gap-2.5 mb-6 group">
-              <img src="/logo.png" alt="HUSBA DIGITAL" className="w-10 h-10 rounded-full object-cover group-hover:scale-110 transition-transform duration-300" />
+              <img src="/husba-mark.svg" alt="HUSBA DIGITAL" className="w-10 h-10 rounded-full object-cover group-hover:scale-110 transition-transform duration-300" />
               <span className="text-xl font-bold text-white tracking-tight">HUSBA DIGITAL</span>
             </Link>
             <p className="text-slate-400 mb-6 max-w-xs leading-relaxed text-sm">
