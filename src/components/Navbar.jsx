@@ -64,7 +64,7 @@ const Navbar = () => {
     >
       <div className="flex items-center justify-between max-w-7xl mx-auto">
         <Link to="/" className="pointer-events-auto flex items-center gap-2 group">
-          <img src="/logo.png" alt="HUSBA DIGITAL" className="w-8 h-8 rounded-full object-cover group-hover:scale-110 transition-transform duration-300" />
+          <img src="/husba-mark.svg" alt="HUSBA DIGITAL" className="w-8 h-8 rounded-full object-cover group-hover:scale-110 transition-transform duration-300" />
           <span className="text-xl font-bold tracking-tight">
             HUSBA DIGITAL
           </span>
