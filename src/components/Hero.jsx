@@ -1,9 +1,6 @@
 import { useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
 
 const profileCards = [
   { name: 'Web Development', role: 'Websites & web applications', initials: 'WD', color: 'from-brand-500 to-violet-600' },
@@ -20,59 +17,41 @@ const Hero = () => {
   const cardsContainerRef = useRef(null)
 
   useEffect(() => {
-    const section = heroRef.current
     const cards = cardsContainerRef.current?.querySelectorAll('.hero-card')
-    if (!section || !cards?.length) return
+    if (!cards?.length) return
 
     const ctx = gsap.context(() => {
       gsap.from('.hero-word', {
-        autoAlpha: 0, y: 36, scale: 0.94, duration: 0.84, ease: 'expo.out', delay: 0.2,
-      })
-      gsap.from('.hero-card', {
-        y: 45, autoAlpha: 0, stagger: 0.08, duration: 0.72, ease: 'power3.out', delay: 0.35,
+        autoAlpha: 0, y: 24, duration: 0.6, ease: 'power2.out',
       })
       gsap.from('.hero-copy', {
-        y: 24, autoAlpha: 0, duration: 0.62, ease: 'power2.out', delay: 0.55,
+        y: 16, autoAlpha: 0, duration: 0.5, ease: 'power2.out', delay: 0.15,
       })
 
-      const timeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: () => '+=' + window.innerHeight * (profileCards.length - 1) * 0.82,
-          scrub: 0.8,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-      })
+      // Keep one active card; use a light transform/opacity-only loop for mobile performance.
+      gsap.set(cards, { yPercent: 120, xPercent: 0, rotation: 0, scale: 0.94, autoAlpha: 0 })
+      gsap.set(cards[0], { yPercent: 0, rotation: -3, scale: 1, autoAlpha: 1 })
 
-      for (let i = 0; i < cards.length - 1; i += 1) {
-        const current = cards[i]
-        const next = cards[i + 1]
-        const at = i
-
-        timeline.to(current, {
-          y: '-115vh',
-          x: i % 2 === 0 ? '-12vw' : '12vw',
-          rotate: i % 2 === 0 ? -15 : 15,
-          scale: 0.78,
-          autoAlpha: 0.15,
+      const cycle = gsap.timeline({ repeat: -1, repeatDelay: 0.15 })
+      cards.forEach((card, i) => {
+        const next = cards[(i + 1) % cards.length]
+        cycle.to({}, { duration: 1.65 })
+        cycle.to(card, {
+          yPercent: -125,
+          xPercent: i % 2 === 0 ? -5 : 5,
+          rotation: i % 2 === 0 ? -8 : 8,
+          scale: 0.9,
+          autoAlpha: 0,
+          duration: 0.62,
           ease: 'power2.in',
-          duration: 1,
-        }, at)
-
-        timeline.fromTo(next,
-          { y: '62vh', x: i % 2 === 0 ? '5vw' : '-5vw', rotate: i % 2 === 0 ? 10 : -10, scale: 0.82, autoAlpha: 0.4 },
-          { y: 0, x: 0, rotate: 0, scale: 1, autoAlpha: 1, ease: 'power2.out', duration: 1 },
-          at + 0.12,
+        })
+        cycle.fromTo(next,
+          { yPercent: 115, xPercent: i % 2 === 0 ? 4 : -4, rotation: i % 2 === 0 ? 7 : -7, scale: 0.94, autoAlpha: 0 },
+          { yPercent: 0, xPercent: 0, rotation: i % 2 === 0 ? -2 : 2, scale: 1, autoAlpha: 1, duration: 0.72, ease: 'power3.out' },
+          '<0.08',
         )
-      }
-
-      timeline.to('.hero-word', { scale: 1.1, y: '-3vh', autoAlpha: 0.18, ease: 'none', duration: profileCards.length - 1 }, 0)
-      timeline.to('.hero-copy', { autoAlpha: 0, y: 28, ease: 'none', duration: 0.7 }, 0.15)
-      timeline.to('.hero-copy', { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.45 }, profileCards.length - 1 - 0.2)
-    }, section)
+      })
+    }, heroRef)
 
     return () => ctx.revert()
   }, [])
@@ -85,36 +64,31 @@ const Hero = () => {
         </span>
       </div>
 
-      <div className="relative z-10 flex flex-col items-center justify-center w-full px-6" style={{ perspective: '1400px' }}>
+      <div className="relative z-10 flex flex-col items-center justify-center w-full px-6" style={{ perspective: '1100px' }}>
         <div ref={cardsContainerRef} className="relative w-[min(78vw,320px)] h-[min(96vw,420px)] max-h-[48vh] min-h-[280px] md:w-[340px] md:h-[440px] md:max-h-[52vh] mb-7" style={{ transformStyle: 'preserve-3d' }}>
           {profileCards.map((card, i) => (
             <div
               key={card.name}
-              className="hero-card absolute inset-0 rounded-2xl overflow-hidden will-change-transform"
+              className="hero-card absolute inset-0 rounded-2xl overflow-hidden"
               style={{
                 background: '#0F172A',
                 color: 'white',
                 border: '1px solid rgba(255,255,255,0.2)',
-                boxShadow: '24px 36px 70px rgba(0,0,0,0.4)',
-                transform: `translate3d(${(i % 2 === 0 ? 1 : -1) * Math.min(i, 3) * 5}px, ${Math.min(i, 3) * 7}px, ${(profileCards.length - i) * 8}px) rotate(${(i % 2 === 0 ? 1 : -1) * Math.min(i, 3) * 2}deg) scale(${1 - Math.min(i, 3) * 0.025})`,
+                boxShadow: '20px 28px 48px rgba(0,0,0,0.32)',
+                willChange: 'transform, opacity',
                 zIndex: profileCards.length - i,
               }}
             >
-              <div className="relative w-full h-full overflow-hidden">
-                <div className="absolute inset-0 pointer-events-none" style={{
-                  background: 'linear-gradient(115deg, rgba(255,255,255,0.18), transparent 34%, rgba(0,0,0,0.24))',
-                  mixBlendMode: 'screen',
-                }} />
-                <div className={`w-full h-full bg-gradient-to-br ${card.color} flex flex-col items-center justify-center text-white p-5 md:p-7`}>
-                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-2xl font-bold mb-5 border border-white/25 shadow-lg">
-                    {card.initials}
-                  </div>
-                  <h3 className="text-xl md:text-2xl font-semibold text-center leading-tight">{card.name}</h3>
-                  <p className="text-sm md:text-base text-white/75 text-center mt-3 max-w-[260px] leading-relaxed">{card.role}</p>
-                  <span className="absolute bottom-5 left-5 text-[10px] md:text-xs tracking-[0.2em] uppercase text-white/60">
-                    HUSBA DIGITAL <span className="ml-2">{String(i + 1).padStart(2, '0')} / {String(profileCards.length).padStart(2, '0')}</span>
-                  </span>
+              <div className={`relative w-full h-full bg-gradient-to-br ${card.color} flex flex-col items-center justify-center text-white p-5 md:p-7`}>
+                <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(115deg, rgba(255,255,255,0.16), transparent 38%, rgba(0,0,0,0.2))' }} />
+                <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-white/20 flex items-center justify-center text-2xl font-bold mb-5 border border-white/25">
+                  {card.initials}
                 </div>
+                <h3 className="relative text-xl md:text-2xl font-semibold text-center leading-tight">{card.name}</h3>
+                <p className="relative text-sm md:text-base text-white/75 text-center mt-3 max-w-[260px] leading-relaxed">{card.role}</p>
+                <span className="absolute bottom-5 left-5 text-[10px] md:text-xs tracking-[0.2em] uppercase text-white/60">
+                  HUSBA DIGITAL <span className="ml-2">{String(i + 1).padStart(2, '0')} / {String(profileCards.length).padStart(2, '0')}</span>
+                </span>
               </div>
             </div>
           ))}
